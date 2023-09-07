@@ -1,0 +1,14 @@
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\bin\Debug\net6.0\LibraryManagementApp.exe
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\bin\Debug\net6.0\LibraryManagementApp.deps.json
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\bin\Debug\net6.0\LibraryManagementApp.runtimeconfig.json
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\bin\Debug\net6.0\LibraryManagementApp.dll
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\bin\Debug\net6.0\LibraryManagementApp.pdb
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\obj\Debug\net6.0\LibraryManagementApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\obj\Debug\net6.0\LibraryManagementApp.AssemblyInfoInputs.cache
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\obj\Debug\net6.0\LibraryManagementApp.AssemblyInfo.cs
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\obj\Debug\net6.0\LibraryManagementApp.csproj.CoreCompileInputs.cache
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\obj\Debug\net6.0\LibraryManagementApp.dll
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\obj\Debug\net6.0\refint\LibraryManagementApp.dll
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\obj\Debug\net6.0\LibraryManagementApp.pdb
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\obj\Debug\net6.0\LibraryManagementApp.genruntimeconfig.cache
+C:\Users\as\source\repos\library-management-console-app\LibraryManagementApp\LibraryManagementApp\obj\Debug\net6.0\ref\LibraryManagementApp.dll
