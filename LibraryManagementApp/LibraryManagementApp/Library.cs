@@ -11,10 +11,14 @@ namespace LibraryManagementApp
     internal class Library
     {
         private List<Book> _books;
+        private List<Member> _members;
+        private List<LendBook> _lendBooks;
 
         public Library() 
         {
             _books = new List<Book>();
+            _members = new List<Member>();
+            _lendBooks = new List<LendBook>();
         }
 
         public void AddBook(Book book)
@@ -27,9 +31,106 @@ namespace LibraryManagementApp
             return _books;
         }
 
+        public void RemoveBook(String bookTitle)
+        {
+            // book thitle to remove
+            Book bookToRemove = _books.Find(b => b.BookName.Equals(bookTitle, StringComparison.OrdinalIgnoreCase));
+            if (bookToRemove != null)
+            {
+                _books.Remove(bookToRemove);
+            }
+            else
+            {
+                Console.WriteLine("Book not found in the library.");
+            }
+
+        }
+
+        public void RemoveBook(int bookId)
+        {
+            // book thitle to remove
+            Book bookToRemove = _books.Find(b => b.BookId ==bookId);
+            if (bookToRemove != null)
+            {
+                _books.Remove(bookToRemove);
+            }
+            else
+            {
+                Console.WriteLine("Book not found in the library.");
+            }
+
+        }
+
         public Book SearchBookInfo(string bookTitle)
         {
-            return books.Find(b => b.GetTitle().Equals(bookTitle, StringComparison.OrdinalIgnoreCase));
+            return _books.Find(b => b.BookName.Equals(bookTitle, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public Book SearchBookInfo(int bookId)
+        {
+            return _books.Find(b => b.BookId == bookId);
+        }
+
+        public List<Member> GetAllMembers()
+        {
+            return _members;
+        }
+
+        public Member SearchMemberInfo(int memberId)
+        {
+            return _members.Find(m => m.MemberId == memberId);
+        }
+
+        public Member SearchMemberInfo(string nicNumber)
+        {
+            return _members.Find(m => m.MemberNic.Equals(nicNumber, StringComparison.OrdinalIgnoreCase));
+        }
+        public List<LendBook> ViewLendingInfo()
+        {
+            return _lendBooks;
+        }
+
+        public Book GetValidBook(string bookTitle)
+        {
+            Book? foundBook = SearchBookInfo(bookTitle);
+
+            if (foundBook != null)
+            {
+                return foundBook;
+            }
+            else
+            {
+                return new Book();
+            }
+        }
+
+        public Member GetValidMember(int memberId)
+        {
+            Member? foundMember = SearchMemberInfo(memberId);
+
+            if (foundMember != null)
+            {
+                return foundMember;
+            }
+            else
+            {
+                return new Member();
+            }
+        }
+
+        public int GetBookCount()
+        {
+            return _books.Count;
+        }
+
+        public int GetMemberCount()
+        {
+            return _members.Count;
+        }
+
+        public int GetLendBookCount()
+        {
+            return _members.Count;
         }
     }
 }

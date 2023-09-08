@@ -9,6 +9,7 @@ namespace LibraryManagementApp
 {
     internal class LendBook
     {
+
         private int _lendBookId;
         private Book _book;
         private Member _member;
@@ -131,5 +132,4 @@ namespace LibraryManagementApp
         }
 
     }
-}
 }
