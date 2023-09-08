@@ -1,4 +1,6 @@
-﻿namespace LibraryManagementApp
+﻿using static LibraryManagementApp.Book;
+
+namespace LibraryManagementApp
 {
     internal class Program
     {
@@ -54,7 +56,8 @@
 
                     if (!string.IsNullOrEmpty(errorMessage))
                     {
-                        Console.WriteLine(errorMessage);
+                        int number = (int)field;
+                        Console.WriteLine($"Error Code {number}: {errorMessage}");
                     }
                 }
             }

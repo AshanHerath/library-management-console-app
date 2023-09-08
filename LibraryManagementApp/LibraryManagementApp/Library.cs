@@ -26,5 +26,10 @@ namespace LibraryManagementApp
         {
             return _books;
         }
+
+        public Book SearchBookInfo(string bookTitle)
+        {
+            return books.Find(b => b.GetTitle().Equals(bookTitle, StringComparison.OrdinalIgnoreCase));
+        }
     }
 }
