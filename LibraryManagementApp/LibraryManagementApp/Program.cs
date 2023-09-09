@@ -1,4 +1,5 @@
 ﻿using LibraryManagementApp;
+using System.Collections.Generic;
 using static LibraryManagementApp.Book;
 
 namespace LibraryManagementApp
@@ -98,8 +99,9 @@ namespace LibraryManagementApp
                     {
                         // Create a new Book and add it to the library
                         Book newBook = new Book(addBook.BookName, addBook.BookDescription, addBook.BookAuthor, addBook.BookIsbn);
+                        library.AddBook(newBook);
                         Console.WriteLine("succe fuly add");
-                        
+
                     }
                     else
                     {
@@ -110,6 +112,8 @@ namespace LibraryManagementApp
                             Console.WriteLine($"Error: {error}");
                         }
                     }
+
+                    BackToMenu("1 to Add Book or ");
 
                     break;
 
@@ -127,12 +131,12 @@ namespace LibraryManagementApp
 
                     if (int.TryParse(Console.ReadLine(), out int mbookIdToRemove))
                     {
-                        removeBook.BookId = mbookIdToRemove;
+                        Book bookToRemove = library.GetValidBook(mbookIdToRemove);
                         // Check if there are any errors
-                        if (removeBook.CheckError() == 0)
+                        if (bookToRemove != null)
                         {
 
-                            library.RemoveBook(removeBook.BookId);
+                            library.RemoveBook(bookToRemove);
                             Console.WriteLine("Book removed successfully.");
 
                         }
@@ -140,20 +144,16 @@ namespace LibraryManagementApp
                         {
                             Console.WriteLine("Error(s) occurred:");
 
-                            foreach (string error in removeBook.GetErrors())
-                            {
-                                Console.WriteLine($"Error: {error}");
-                            }
+                            Console.WriteLine("book id not found");
+
                         }
                     }
                     else
                     {
-
+                        Console.WriteLine("Invalid input. Please enter a valid number.");
                     }
-                        
 
-                        
-                    //BackToMenu("1 to Remove Book or ");
+                    BackToMenu("1 to Remove Book or ");
 
                     break;
 
@@ -179,10 +179,14 @@ namespace LibraryManagementApp
                     // Check if there are any errors
                     if (addMember.CheckError() == 0)
                     {
-                        library.RegisterMember(new Member(addMember.MemberName, addMember.MemberAddress, addMember.MemberNic));
+                        Member newMember = new Member(addMember.MemberName, addMember.MemberAddress, addMember.MemberNic);
+                        library.RegisterMember(newMember);
+                        Console.Clear();
+                        Console.WriteLine("Member registered successfully.");
                     }
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine("Error(s) occurred:");
 
                         foreach (string error in addMember.GetErrors())
@@ -190,10 +194,7 @@ namespace LibraryManagementApp
                             Console.WriteLine($"Error: {error}");
                         }
                     }
-                    Console.Clear();
-
-                    Console.WriteLine("Member registered successfully.");
-                    //BackToMenu("1 to Register New Member or ");
+                    BackToMenu("1 to Register New Member or ");
                     break;
 
 
@@ -210,29 +211,27 @@ namespace LibraryManagementApp
                     Console.Write("Enter Member ID to remove: ");
                     if (int.TryParse(Console.ReadLine(), out int memberIdToRemove))
                     {
-                        removeMember.MemberId = memberIdToRemove;
+                        Member memberToRemove = library.GetValidMember(memberIdToRemove);
 
                         // Check if there are any errors
-                        if (removeMember.CheckError() == 0)
+                        if (memberToRemove !=  null)
                         {
-                            library.RemoveMembers(removeMember.MemberId);
+                            library.RemoveMembers(memberToRemove);
+                            Console.WriteLine("Member removed successfully.");
                         }
                         else
                         {
-
+                            Console.WriteLine("Member id not found.");
                         }
-                            
-
-                        Console.Clear();
-
-                        Console.WriteLine("Member removed successfully.");
                     }
                     else
                     {
-                        Console.WriteLine("Invalid Member ID.");
+                        Console.WriteLine("Invalid input. Please enter a valid number.");
                     }
-                    //BackToMenu("1 to Remove Member or ");
+                    BackToMenu("1 to Remove Member or ");
                     break;
+
+
 
                 case 7:
                     // List All Books
@@ -251,8 +250,9 @@ namespace LibraryManagementApp
                     }
 
                     Console.WriteLine("------------------------------------------------------------------------------------------------");
-                    //BackToMenu("");
+                    BackToMenu("");
                     break;
+
 
 
                 case 8:
@@ -272,10 +272,30 @@ namespace LibraryManagementApp
                     }
 
                     Console.WriteLine("--------------------------------------------");
-                    //BackToMenu("");
+                    BackToMenu("");
                     break;
 
 
+            }
+        }
+        // back to menu
+        private static void BackToMenu(string message)
+        {
+            while (true)
+            {
+                Console.WriteLine("Press " + message + "0 to return to the main menu...");
+                string input = Console.ReadLine();
+
+                if (int.TryParse(input, out int number) && (number == 0 || number == 1))
+                {
+                    setChoose = number;
+                    MenuChoose();
+                    break; // Exit the loop if valid input is provided
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid number.");
+                }
             }
         }
     }

@@ -33,18 +33,7 @@ namespace LibraryManagementApp
         public int BookId
         {
             get { return _bookId; }
-            set 
-            {
-                if (_library.GetValidBook != null)
-                {
-                    this._bookId = value;
-                }
-                else
-                {
-                    _errors.Add("Book Id is not valid.");
-                }
-                
-            }
+            
         }
 
         public string BookName
@@ -55,7 +44,7 @@ namespace LibraryManagementApp
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
                     _bookTitle = value;
                 }
@@ -74,7 +63,7 @@ namespace LibraryManagementApp
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
                     _bookDescription = value;
                 }
@@ -90,7 +79,7 @@ namespace LibraryManagementApp
             get { return _bookAuthor; }
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
                     _bookAuthor = value;
                 }
@@ -106,7 +95,7 @@ namespace LibraryManagementApp
             get { return _bookISBN; }
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
                     _bookISBN = value;
                 }
@@ -120,10 +109,7 @@ namespace LibraryManagementApp
         public bool BookIsAvailable
         {
             get { return _bookIsAvailable; }
-            set
-            {
-                _bookIsAvailable = value;
-            }
+            
         }
 
         public int CheckError()

@@ -34,18 +34,7 @@ namespace LibraryManagementApp
             { 
                 return this._memberId; 
             } 
-            set
-            {
-                if (_library.GetValidMember != null)
-                {
-                    this._memberId = value;
-                }
-                else
-                {
-                    _errors.Add("Member Id is not valid.");
-                }
-
-            }
+            
         }
 
         public string MemberName 

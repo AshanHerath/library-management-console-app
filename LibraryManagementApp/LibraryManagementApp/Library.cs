@@ -37,26 +37,14 @@ namespace LibraryManagementApp
         }
 
 
-        public void RemoveBook(int bookId)
+        public void RemoveBook(Book bookId)
         {
-            // book thitle to remove
-            Book bookToRemove = _books.Find(b => b.BookId == bookId);
-            if (bookToRemove != null)
-            {
-                _books.Remove(bookToRemove);
-            }
-
+                _books.Remove(bookId);
         }
 
-        public void RemoveMembers(int memberId)
+        public void RemoveMembers(Member memberId)
         {
-            // book thitle to remove
-            Member memberToRemove = _members.Find(b => b.MemberId == memberId);
-            if (memberToRemove != null)
-            {
-                _members.Remove(memberToRemove);
-            }
-
+                _members.Remove(memberId);
         }
 
         public Book SearchBookInfo(string bookTitle)
@@ -88,32 +76,16 @@ namespace LibraryManagementApp
             return _lendBooks;
         }
 
-        public Book GetValidBook(string bookTitle)
+        public Book? GetValidBook(int bookId)
         {
-            Book? foundBook = SearchBookInfo(bookTitle);
-
-            if (foundBook != null)
-            {
-                return foundBook;
-            }
-            else
-            {
-                return new Book();
-            }
+            Book? foundBook = SearchBookInfo(bookId);
+            return foundBook;
         }
 
-        public Member GetValidMember(int memberId)
+        public Member? GetValidMember(int memberId)
         {
             Member? foundMember = SearchMemberInfo(memberId);
-
-            if (foundMember != null)
-            {
-                return foundMember;
-            }
-            else
-            {
-                return new Member();
-            }
+            return foundMember;
         }
 
         public int GetBookCount()
