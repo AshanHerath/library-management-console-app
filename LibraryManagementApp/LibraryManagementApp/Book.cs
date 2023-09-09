@@ -14,6 +14,8 @@ namespace LibraryManagementApp
         private string _bookAuthor;
         private string _bookISBN;
         private bool _bookIsAvailable;
+        private Library _library = new Library();
+
         private List<string> _errors = new List<string>();
 
         public Book() { }
@@ -31,6 +33,18 @@ namespace LibraryManagementApp
         public int BookId
         {
             get { return _bookId; }
+            set 
+            {
+                if (_library.GetValidBook != null)
+                {
+                    this._bookId = value;
+                }
+                else
+                {
+                    _errors.Add("Book Id is not valid.");
+                }
+                
+            }
         }
 
         public string BookName

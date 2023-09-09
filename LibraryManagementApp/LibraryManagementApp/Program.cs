@@ -5,7 +5,7 @@ namespace LibraryManagementApp
 {
     internal class Program
     {
-        private static Library library = new Library(); // Initialize the library object
+        private static Library library; // Initialize the library object
 
         private static int recall;
         private static int setChoose = 0;
@@ -55,6 +55,8 @@ namespace LibraryManagementApp
         {
             int choice;
 
+            
+
             if (setChoose == 0)
             {
                 choice = ShowMenu();
@@ -73,30 +75,29 @@ namespace LibraryManagementApp
                     Console.Clear();
                     recall = choice;
 
-                    // Create a new Book instance
-                    Book book = new Book();
+                    Book addBook = new Book();
 
                     // Get Book Title
                     Console.WriteLine("Enter Book Title: ");
-                    book.BookName = Console.ReadLine();
+                    addBook.BookName = Console.ReadLine();
 
                     // Get Book Author
                     Console.WriteLine("Enter Book Author: ");
-                    book.BookAuthor = Console.ReadLine();
+                    addBook.BookAuthor = Console.ReadLine();
 
                     // Get Book Description
                     Console.WriteLine("Enter Book Description: ");
-                    book.BookDescription = Console.ReadLine();
+                    addBook.BookDescription = Console.ReadLine();
 
                     // Get Book ISBN
                     Console.WriteLine("Enter Book ISBN: ");
-                    book.BookIsbn = Console.ReadLine();
+                    addBook.BookIsbn = Console.ReadLine();
 
                     // Check if there are any errors
-                    if (book.CheckError() == 0)
+                    if (addBook.CheckError() == 0)
                     {
                         // Create a new Book and add it to the library
-                        Book newBook = new Book(book.BookName, book.BookDescription, book.BookAuthor, book.BookIsbn);
+                        Book newBook = new Book(addBook.BookName, addBook.BookDescription, addBook.BookAuthor, addBook.BookIsbn);
                         Console.WriteLine("succe fuly add");
                         
                     }
@@ -104,7 +105,7 @@ namespace LibraryManagementApp
                     {
                         Console.WriteLine("Error(s) occurred:");
 
-                        foreach (string error in book.GetErrors())
+                        foreach (string error in addBook.GetErrors())
                         {
                             Console.WriteLine($"Error: {error}");
                         }
@@ -117,9 +118,122 @@ namespace LibraryManagementApp
                     Console.Clear();
                     recall = choice;
 
+                    Book removeBook = new Book();
 
+                    Console.WriteLine("Remove a Book:");
+                    Console.WriteLine("------------------");
+
+                    Console.Write("Enter Book Title to remove: ");
+
+                    if (int.TryParse(Console.ReadLine(), out int mbookIdToRemove))
+                    {
+                        removeBook.BookId = mbookIdToRemove;
+                        // Check if there are any errors
+                        if (removeBook.CheckError() == 0)
+                        {
+
+                            library.RemoveBook(removeBook.BookId);
+                            Console.WriteLine("Book removed successfully.");
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error(s) occurred:");
+
+                            foreach (string error in removeBook.GetErrors())
+                            {
+                                Console.WriteLine($"Error: {error}");
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                        
+
+                        
+                    //BackToMenu("1 to Remove Book or ");
 
                     break;
+
+                case 3:
+                    // Register Member
+                    Console.Clear();
+                    recall = choice;
+
+                    Member addMember = new Member();
+
+                    Console.WriteLine("Register a New Member:");
+                    Console.WriteLine("-----------------------");
+
+                    Console.Write("Enter Member Name: ");
+                    addMember.MemberName = Console.ReadLine();
+
+                    Console.Write("Enter Member Address: ");
+                    addMember.MemberAddress = Console.ReadLine();
+
+                    Console.Write("Enter Member NIC: ");
+                    addMember.MemberNic = Console.ReadLine();
+
+                    // Check if there are any errors
+                    if (addMember.CheckError() == 0)
+                    {
+                        library.RegisterMember(new Member(addMember.MemberName, addMember.MemberAddress, addMember.MemberNic));
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error(s) occurred:");
+
+                        foreach (string error in addMember.GetErrors())
+                        {
+                            Console.WriteLine($"Error: {error}");
+                        }
+                    }
+                    Console.Clear();
+
+                    Console.WriteLine("Member registered successfully.");
+                    //BackToMenu("1 to Register New Member or ");
+                    break;
+
+
+                case 4:
+                    // Remove Member
+                    Console.Clear();
+                    recall = choice;
+
+                    Member removeMember = new Member();
+
+                    Console.WriteLine("Remove a Member:");
+                    Console.WriteLine("-----------------");
+
+                    Console.Write("Enter Member ID to remove: ");
+                    if (int.TryParse(Console.ReadLine(), out int memberIdToRemove))
+                    {
+                        removeMember.MemberId = memberIdToRemove;
+
+                        // Check if there are any errors
+                        if (removeMember.CheckError() == 0)
+                        {
+                            library.RemoveMembers(removeMember.MemberId);
+                        }
+                        else
+                        {
+
+                        }
+                            
+
+                        Console.Clear();
+
+                        Console.WriteLine("Member removed successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Member ID.");
+                    }
+                    //BackToMenu("1 to Remove Member or ");
+                    break;
+
 
             }
         }

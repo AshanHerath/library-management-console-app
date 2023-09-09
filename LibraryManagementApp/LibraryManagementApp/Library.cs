@@ -31,32 +31,30 @@ namespace LibraryManagementApp
             return _books;
         }
 
-        public void RemoveBook(String bookTitle)
+        public void RegisterMember(Member member)
         {
-            // book thitle to remove
-            Book bookToRemove = _books.Find(b => b.BookName.Equals(bookTitle, StringComparison.OrdinalIgnoreCase));
-            if (bookToRemove != null)
-            {
-                _books.Remove(bookToRemove);
-            }
-            else
-            {
-                Console.WriteLine("Book not found in the library.");
-            }
-
+            _members.Add(member);
         }
+
 
         public void RemoveBook(int bookId)
         {
             // book thitle to remove
-            Book bookToRemove = _books.Find(b => b.BookId ==bookId);
+            Book bookToRemove = _books.Find(b => b.BookId == bookId);
             if (bookToRemove != null)
             {
                 _books.Remove(bookToRemove);
             }
-            else
+
+        }
+
+        public void RemoveMembers(int memberId)
+        {
+            // book thitle to remove
+            Member memberToRemove = _members.Find(b => b.MemberId == memberId);
+            if (memberToRemove != null)
             {
-                Console.WriteLine("Book not found in the library.");
+                _members.Remove(memberToRemove);
             }
 
         }

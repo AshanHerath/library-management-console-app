@@ -13,16 +13,10 @@ namespace LibraryManagementApp
         private string _memberName;
         private string _memberAddress;
         private string _memberNic;
+        private Library _library = new Library();
 
-        private string[] _errorMessages = new string[Enum.GetValues(typeof(MemberErrorField)).Length];
+        private List<string> _errors = new List<string>();
 
-        public enum MemberErrorField
-        {
-            MemberIdError = 1,
-            NameError = 2,
-            AddressError = 3,
-            NicError = 4,
-        }
 
         public Member() { }
 
@@ -40,24 +34,35 @@ namespace LibraryManagementApp
             { 
                 return this._memberId; 
             } 
+            set
+            {
+                if (_library.GetValidMember != null)
+                {
+                    this._memberId = value;
+                }
+                else
+                {
+                    _errors.Add("Member Id is not valid.");
+                }
+
+            }
         }
 
         public string MemberName 
         { 
             get 
             { 
-                return _memberName; 
+                return this._memberName; 
             }
             set 
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    _memberName = value;
-                    _errorMessages[(int)MemberErrorField.NameError] = null;
+                    this._memberName = value;
                 }
                 else
                 {
-                    _errorMessages[(int)MemberErrorField.NameError] = "Member name can't be null or empty.";
+                    _errors.Add("Member name can't be null or empty.");
                 }
             } 
         }
@@ -66,18 +71,17 @@ namespace LibraryManagementApp
         { 
             get
             {  
-                return _memberAddress; 
+                return this._memberAddress; 
             }
             set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    _memberAddress = value;
-                    _errorMessages[(int)MemberErrorField.AddressError] = null;
+                    this._memberAddress = value;
                 }
                 else
                 {
-                    _errorMessages[(int)MemberErrorField.AddressError] = "Member Address can't be null or empty.";
+                    _errors.Add("Member Address can't be null or empty.");
                 }
             }
         }
@@ -86,45 +90,29 @@ namespace LibraryManagementApp
         { 
             get 
             { 
-                return _memberNic;
+                return this._memberNic;
             }
             set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    _memberNic = value;
-                    _errorMessages[(int)MemberErrorField.NicError] = null;
+                    this._memberNic = value;
                 }
                 else
                 {
-                    _errorMessages[(int)MemberErrorField.NicError] = "Member NIC can't be null or empty.";
+                    _errors.Add("Member NIC can't be null or empty.");
                 }
-            }
-        }
-
-        public string GetError(MemberErrorField field)
-        {
-            int index = (int)field;
-            if (index >= 0 && index < _errorMessages.Length)
-            {
-                return _errorMessages[index];
-            }
-            else
-            {
-                return null;
             }
         }
 
         public int CheckError()
         {
-            foreach (var errorMessage in _errorMessages)
-            {
-                if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    return 0;
-                }
-            }
-            return 1;
+            return _errors.Count;
+        }
+
+        public string[] GetErrors()
+        {
+            return _errors.ToArray();
         }
 
     }
