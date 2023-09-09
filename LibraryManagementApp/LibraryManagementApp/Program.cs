@@ -234,6 +234,26 @@ namespace LibraryManagementApp
                     //BackToMenu("1 to Remove Member or ");
                     break;
 
+                case 7:
+                    // List All Books
+                    Console.Clear();
+                    recall = choice;
+                    List<Book> allBooks = library.GetAllBooks();
+
+                    Console.WriteLine("List of all books:");
+                    Console.WriteLine("------------------------------------------------------------------------------------------------");
+                    Console.WriteLine("| Book ID  | Title                | Author               |     ISBN          |  Availability   |");
+                    Console.WriteLine("------------------------------------------------------------------------------------------------");
+
+                    foreach (var book in allBooks)
+                    {
+                        Console.WriteLine($"| {book.BookId,8} | {book.BookName,-20} | {book.BookAuthor,-20} | {book.BookIsbn,-17} | {(book.BookIsAvailable ? "Available" : "Not available"),-15} |");
+                    }
+
+                    Console.WriteLine("------------------------------------------------------------------------------------------------");
+                    //BackToMenu("");
+                    break;
+
 
             }
         }
