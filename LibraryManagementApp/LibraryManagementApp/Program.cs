@@ -255,6 +255,27 @@ namespace LibraryManagementApp
                     break;
 
 
+                case 8:
+                    // List All Members
+                    Console.Clear();
+                    recall = choice;
+                    List<Member> allMembers = library.GetAllMembers();
+
+                    Console.WriteLine("List of all members:");
+                    Console.WriteLine("---------------------------------------------------------------------------------------");
+                    Console.WriteLine("| Member ID   | Name                      |   Address             |  NIC               |");
+                    Console.WriteLine("---------------------------------------------------------------------------------------");
+
+                    foreach (var member in allMembers)
+                    {
+                        Console.WriteLine($"| {member.MemberId,10} | {member.MemberName,-25} | {member.MemberAddress,-25} | {member.MemberNic,-25} |");
+                    }
+
+                    Console.WriteLine("--------------------------------------------");
+                    //BackToMenu("");
+                    break;
+
+
             }
         }
     }
