@@ -14,29 +14,18 @@ namespace LibraryManagementApp
         private string _bookAuthor;
         private string _bookISBN;
         private bool _bookIsAvailable;
-
-        private string[] _errorMessages = new string[Enum.GetValues(typeof(BookErrorField)).Length];
-
-        public enum BookErrorField
-        {
-            BookIdError = 1,
-            TitleError = 2,
-            DescriptionError = 3,
-            AuthorError = 4,
-            IsbnError = 5,
-            IsAvailableError = 6,
-        }
+        private List<string> _errors = new List<string>();
 
         public Book() { }
 
         public Book(string bookTitle, string bookDescription, string bookAuthor, string bookISBN)
         {
-            _bookId = 0;
-            _bookTitle = bookTitle;
-            _bookDescription = bookDescription;
-            _bookAuthor = bookAuthor;
-            _bookISBN = bookISBN;
-            _bookIsAvailable = true;
+            this._bookId = LibrarySystem.GenerateBookId();
+            this._bookTitle = bookTitle;
+            this._bookDescription = bookDescription;
+            this._bookAuthor = bookAuthor;
+            this._bookISBN = bookISBN;
+            this._bookIsAvailable = true;
         }
 
         public int BookId
@@ -55,11 +44,10 @@ namespace LibraryManagementApp
                 if (!string.IsNullOrEmpty(value))
                 {
                     _bookTitle = value;
-                    _errorMessages[(int)BookErrorField.TitleError] = null;
                 }
                 else
                 {
-                    _errorMessages[(int)BookErrorField.TitleError] = "Book Title can't be null or empty.";
+                    _errors.Add("Book Title can't be null or empty.");
                 }
             }
         }
@@ -75,11 +63,10 @@ namespace LibraryManagementApp
                 if (!string.IsNullOrEmpty(value))
                 {
                     _bookDescription = value;
-                    _errorMessages[(int)BookErrorField.DescriptionError] = null;
                 }
                 else
                 {
-                    _errorMessages[(int)BookErrorField.DescriptionError] = "Book Description can't be null or empty.";
+                    _errors.Add("Book Description can't be null or empty.");
                 }
             }
         }
@@ -92,11 +79,10 @@ namespace LibraryManagementApp
                 if (!string.IsNullOrEmpty(value))
                 {
                     _bookAuthor = value;
-                    _errorMessages[(int)BookErrorField.AuthorError] = null;
                 }
                 else
                 {
-                    _errorMessages[(int)BookErrorField.AuthorError] = "Book Author can't be null or empty.";
+                    _errors.Add("Book Author can't be null or empty.");
                 }
             }
         }
@@ -109,11 +95,10 @@ namespace LibraryManagementApp
                 if (!string.IsNullOrEmpty(value))
                 {
                     _bookISBN = value;
-                    _errorMessages[(int)BookErrorField.IsbnError] = null;
                 }
                 else
                 {
-                    _errorMessages[(int)BookErrorField.IsbnError] = "Book ISBN can't be null or empty.";
+                    _errors.Add("Book ISBN can't be null or empty.");
                 }
             }
         }
@@ -127,29 +112,14 @@ namespace LibraryManagementApp
             }
         }
 
-        public string GetError(BookErrorField field)
-        {
-            int index = (int)field;
-            if (index >= 0 && index < _errorMessages.Length)
-            {
-                return _errorMessages[index];
-            }
-            else
-            {
-                return null; 
-            }
-        }
-
         public int CheckError()
         {
-            foreach (var errorMessage in _errorMessages)
-            {
-                if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    return 0;
-                }
-            }
-            return 1;
+            return _errors.Count;
+        }
+
+        public string[] GetErrors()
+        {
+            return _errors.ToArray();
         }
     }
 }

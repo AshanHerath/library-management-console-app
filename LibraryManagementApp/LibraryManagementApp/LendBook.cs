@@ -30,7 +30,7 @@ namespace LibraryManagementApp
 
         public LendBook(Book book, Member member, DateTime returnDate)
         {
-            this._lendBookId = 0;
+            this._lendBookId = LibrarySystem.GenerateLendBookId();
             this._book = book;
             this._member = member;
             this._startDate = DateTime.Now;

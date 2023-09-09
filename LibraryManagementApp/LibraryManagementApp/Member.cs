@@ -28,10 +28,10 @@ namespace LibraryManagementApp
 
         public Member(string memberName, string memberAddress, string memberNic)
         {
-            this._memberId = 0;
-            this._memberName = memberName;
-            this._memberAddress = memberAddress;
-            this._memberNic = memberNic;
+            _memberId = LibrarySystem.GenerateMemberId();
+            _memberName = memberName;
+            _memberAddress = memberAddress;
+            _memberNic = memberNic;
         }
 
         public int MemberId 

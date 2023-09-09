@@ -16,7 +16,6 @@ namespace LibraryManagementApp
             MenuChoose();
         }
 
-
         private static int ShowMenu()
         {
             Console.Clear();
@@ -94,25 +93,20 @@ namespace LibraryManagementApp
                     book.BookIsbn = Console.ReadLine();
 
                     // Check if there are any errors
-                    if (book.CheckError() == 1)
+                    if (book.CheckError() == 0)
                     {
                         // Create a new Book and add it to the library
                         Book newBook = new Book(book.BookName, book.BookDescription, book.BookAuthor, book.BookIsbn);
+                        Console.WriteLine("succe fuly add");
                         
                     }
                     else
                     {
                         Console.WriteLine("Error(s) occurred:");
 
-                        foreach (Book.BookErrorField field in Enum.GetValues(typeof(Book.BookErrorField)))
+                        foreach (string error in book.GetErrors())
                         {
-                            string errorMessage = book.GetError(field);
-
-                            if (!string.IsNullOrEmpty(errorMessage))
-                            {
-                                int number = (int)field;
-                                Console.WriteLine($"Error Code {number}: {errorMessage}");
-                            }
+                            Console.WriteLine($"Error: {error}");
                         }
                     }
 
