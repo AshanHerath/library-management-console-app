@@ -275,6 +275,41 @@ namespace LibraryManagementApp
                     BackToMenu("1 to Search Book Information or ");
                     break;
 
+                case 6:
+                    // Search Member Information
+                    Console.Clear();
+                    recall = choice;
+                    Console.Write("Enter Member ID to search: ");
+                    String memberIdToSearch = Console.ReadLine();
+
+                    if (int.TryParse(memberIdToSearch, out int memberId))
+                    {
+                        Member foundMember = library.GetValidMember(memberId);
+
+                        if (foundMember != null)
+                        {
+
+                            Member searchedMember = library.SearchMemberInfo(memberId);
+
+                            Console.WriteLine("Member Information:");
+                            Console.WriteLine("--------------------------------------------------");
+                            Console.WriteLine($"| Member ID: {searchedMember.MemberId,6} |");
+                            Console.WriteLine($"| Name: {searchedMember.MemberName,40} |");
+                            Console.WriteLine($"| Address: {searchedMember.MemberAddress,38} |");
+                            Console.WriteLine($"| NIC Number: {searchedMember.MemberNic,-34} |");
+                            Console.WriteLine("--------------------------------------------------");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Member not found.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Member ID.");
+                    }
+                    BackToMenu("1 to Search Member Information or ");
+                    break;
 
 
                 case 7:

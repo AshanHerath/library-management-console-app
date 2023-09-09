@@ -67,10 +67,6 @@ namespace LibraryManagementApp
             return _members.Find(m => m.MemberId == memberId);
         }
 
-        public Member SearchMemberInfo(string nicNumber)
-        {
-            return _members.Find(m => m.MemberNic.Equals(nicNumber, StringComparison.OrdinalIgnoreCase));
-        }
         public List<LendBook> ViewLendingInfo()
         {
             return _lendBooks;
