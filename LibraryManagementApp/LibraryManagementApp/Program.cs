@@ -231,6 +231,50 @@ namespace LibraryManagementApp
                     BackToMenu("1 to Remove Member or ");
                     break;
 
+                case 5:
+
+                    // Search Book Information
+                    Console.Clear();
+                    recall = choice;
+
+                    Console.WriteLine("Search for a Book:");
+                    Console.WriteLine("------------------");
+
+                    Console.Write("Enter Book ID to search: ");
+                    string bookIdToSearch = Console.ReadLine();
+
+                    if (int.TryParse(bookIdToSearch, out int bookId))
+                    {
+                        Book foundBook = library.GetValidBook(bookId);
+
+                        if (foundBook != null)
+                        {
+
+                            Book searchedBook = library.SearchBookInfo(bookId);
+
+                            Console.WriteLine("Book Information:");
+                            Console.WriteLine("--------------------------------------------------");
+                            Console.WriteLine($"| Book ID: {searchedBook.BookId,6} |");
+                            Console.WriteLine($"| Title: {searchedBook.BookName,40} |");
+                            Console.WriteLine($"| Author: {searchedBook.BookAuthor,38} |");
+                            Console.WriteLine($"| Description: {searchedBook.BookIsbn,-34} |");
+                            Console.WriteLine($"| Availability: {(searchedBook.BookIsAvailable ? "Available" : "Not available"),-15} |");
+                            Console.WriteLine("--------------------------------------------------");
+
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Book with ID '{bookId}' not found.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Book ID.");
+                    }
+
+                    BackToMenu("1 to Search Book Information or ");
+                    break;
+
 
 
                 case 7:
