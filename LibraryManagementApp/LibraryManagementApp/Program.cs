@@ -425,7 +425,28 @@ namespace LibraryManagementApp
                     BackToMenu("1 to Return Book or ");
                     break;
 
-               
+
+                case 11:
+                    // View Lending Information
+                    Console.Clear();
+                    recall = choice;
+                    List<LendBook> lendBooks = library.ViewLendingInfo();
+                    Console.WriteLine("Lending Information:");
+                    Console.WriteLine("----------------------------------------------------------------------------------");
+                    Console.WriteLine("| Transaction ID | Book Title     | Member Name    | Start Date   | Return Date  |");
+                    Console.WriteLine("----------------------------------------------------------------------------------");
+
+                    foreach (LendBook lendBook in lendBooks)
+                    {
+                        Console.WriteLine($"| {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,14} | {lendBook.MemberOfLend.MemberName,13} | {lendBook.StartDate,12} | {lendBook.ReturnDate,12} |");
+                    }
+
+                    Console.WriteLine("----------------------------------------------------------------------------------");
+                    BackToMenu("");
+                    break;
+
+
+
             }
         }
 

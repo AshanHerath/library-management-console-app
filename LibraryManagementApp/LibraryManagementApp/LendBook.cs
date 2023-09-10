@@ -103,6 +103,14 @@ namespace LibraryManagementApp
             }
         }
 
+        public DateTime StartDate
+        {
+            get
+            {
+                return _startDate;
+            }
+        }
+
 
         public string GetError(LendBookErrorField field)
         {
