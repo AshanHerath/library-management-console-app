@@ -506,17 +506,3 @@ namespace LibraryManagementApp
         }
     }
 }
-
-
-//// Add the newBook to the library
-//library.AddBook(newBook);
-
-//List<Book> allBooks = library.GetAllBooks();
-
-//Console.WriteLine("Library Books:");
-//Console.WriteLine("| Title    | Author              | Description         | ISBN            |");
-//Console.WriteLine("---------------------------------------------------------------");
-//foreach (var b in allBooks)
-//{
-//    Console.WriteLine($"| {b.BookName,-8} | {b.BookAuthor,-20} | {b.BookDescription,-20} | {b.BookIsbn,-17} ");
-//}
