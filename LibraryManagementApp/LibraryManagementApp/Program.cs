@@ -438,7 +438,7 @@ namespace LibraryManagementApp
 
                     foreach (LendBook lendBook in lendBooks)
                     {
-                        Console.WriteLine($"| {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,14} | {lendBook.MemberOfLend.MemberName,13} | {lendBook.StartDate,12} | {lendBook.ReturnDate,12} |");
+                        Console.WriteLine($"| {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,14} | {lendBook.MemberOfLend.MemberName,13} | {lendBook.StartDate.ToString("yyyy-MM-dd"),12} | {lendBook.ReturnDate.ToString("yyyy-MM-dd"),12} |");
                     }
 
                     Console.WriteLine("----------------------------------------------------------------------------------");
@@ -460,10 +460,23 @@ namespace LibraryManagementApp
                     foreach (LendBook lendBook in overdueBooks)
                     {
                         decimal fine = library.CalculateFine(lendBook);
-                        Console.WriteLine($"| {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,-20} | {lendBook.MemberOfLend.MemberName,-20} | {lendBook.ReturnDate,-12} | Rs. {fine,-9} |");
+                        Console.WriteLine($"| {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,-20} | {lendBook.MemberOfLend.MemberName,-20} | {lendBook.ReturnDate.ToString("yyyy-MM-dd"),-12} | Rs. {fine,-9} |");
                     }
 
                     Console.WriteLine("---------------------------------------------------------------------------------------");
+                    BackToMenu("");
+                    break;
+
+
+                case 13:
+                    // Quit
+                    Environment.Exit(0);
+                    break;
+
+
+                default:
+                    Console.WriteLine("Invalid choice. Please try again.");
+                    setChoose = 1;
                     BackToMenu("");
                     break;
 
