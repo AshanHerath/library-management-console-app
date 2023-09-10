@@ -107,6 +107,32 @@ namespace LibraryManagementApp
             return _lendBooks;
         }
 
+        public List<LendBook> DisplayOverdueBooks()
+        {
+            DateTime currentDate = DateTime.Now;
+            return _lendBooks.Where(t => t.ReturnDate < currentDate).ToList();
+        }
+
+        public decimal CalculateFine(LendBook lendBook)
+        {
+            DateTime dueDate = lendBook.ReturnDate;
+            DateTime currentDate = DateTime.Now;
+            TimeSpan overdueDuration = currentDate - dueDate;
+            decimal fine = 0;
+
+            if (overdueDuration.TotalDays <= 7)
+            {
+                fine = (decimal)overdueDuration.TotalDays * 50;
+            }
+            else
+            {
+                fine = 7 * 50 + (decimal)(overdueDuration.TotalDays - 7) * 100;
+            }
+
+            return fine;
+
+        }
+
         public Book? GetValidBook(int bookId)
         {
             Book? foundBook = SearchBookInfo(bookId);

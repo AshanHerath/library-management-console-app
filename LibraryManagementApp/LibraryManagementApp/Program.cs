@@ -446,6 +446,26 @@ namespace LibraryManagementApp
                     break;
 
 
+                case 12:
+                    // Display Overdue Books
+                    Console.Clear();
+                    recall = choice;
+                    List<LendBook> overdueBooks = library.DisplayOverdueBooks();
+
+                    Console.WriteLine("Overdue Books:");
+                    Console.WriteLine("---------------------------------------------------------------------------------------");
+                    Console.WriteLine("| Transaction ID | Book Title          | Member Name        | Due Date    | Fine      |");
+                    Console.WriteLine("---------------------------------------------------------------------------------------");
+
+                    foreach (LendBook lendBook in overdueBooks)
+                    {
+                        decimal fine = library.CalculateFine(lendBook);
+                        Console.WriteLine($"| {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,-20} | {lendBook.MemberOfLend.MemberName,-20} | {lendBook.ReturnDate,-12} | Rs. {fine,-9} |");
+                    }
+
+                    Console.WriteLine("---------------------------------------------------------------------------------------");
+                    BackToMenu("");
+                    break;
 
             }
         }
