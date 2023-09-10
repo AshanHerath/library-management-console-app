@@ -75,12 +75,30 @@ namespace LibraryManagementApp
             if (bookId != null && memberId != null && bookIsAvailable)
             {
                 LendBook lendBook = new LendBook(bookId, memberId, returnDate);
+                _lendBooks.Add(lendBook);
                 bookId.BookIsAvailable = false;
                 Console.WriteLine("Book lent successfully.");
             }
             else
             {
                 Console.WriteLine("The book has already been Lended");
+            }
+        }
+
+        public void ReturnBook(int lendBookId)
+        {
+            LendBook LendBookToReturn = _lendBooks.Find(t => t.LendBookId == lendBookId);
+
+            if (LendBookToReturn != null)
+            {
+                Book returnBook = LendBookToReturn.LendBookName;
+                returnBook.BookIsAvailable = true;
+                _lendBooks.Remove(LendBookToReturn);
+                Console.WriteLine("Book returned successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Transaction ID is incorrect.");
             }
         }
 

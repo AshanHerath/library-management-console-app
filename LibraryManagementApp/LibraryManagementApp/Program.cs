@@ -407,8 +407,25 @@ namespace LibraryManagementApp
                     break;
 
 
+                case 10:
+                    // Return Book
+                    Console.Clear();
+                    recall = choice;
 
+                    Console.Write("Enter Transaction ID to return: ");
 
+                    if (int.TryParse(Console.ReadLine(), out int lendBookIdToReturn))
+                    {
+                        library.ReturnBook(lendBookIdToReturn);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input.");
+                    }
+                    BackToMenu("1 to Return Book or ");
+                    break;
+
+               
             }
         }
 
