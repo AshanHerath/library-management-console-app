@@ -67,6 +67,23 @@ namespace LibraryManagementApp
             return _members.Find(m => m.MemberId == memberId);
         }
 
+        public void LendBookForMember(Book bookId, Member memberId, DateTime returnDate)
+        {
+            bool bookIsAvailable = bookId.BookIsAvailable;
+            Console.WriteLine(bookIsAvailable);
+
+            if (bookId != null && memberId != null && bookIsAvailable)
+            {
+                LendBook lendBook = new LendBook(bookId, memberId, returnDate);
+                bookId.BookIsAvailable = false;
+                Console.WriteLine("Book lent successfully.");
+            }
+            else
+            {
+                Console.WriteLine("The book has already been Lended");
+            }
+        }
+
         public List<LendBook> ViewLendingInfo()
         {
             return _lendBooks;

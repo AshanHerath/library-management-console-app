@@ -109,6 +109,8 @@ namespace LibraryManagementApp
         public bool BookIsAvailable
         {
             get { return _bookIsAvailable; }
+
+            set { _bookIsAvailable = value; }
             
         }
 

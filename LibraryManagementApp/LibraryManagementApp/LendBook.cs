@@ -26,8 +26,6 @@ namespace LibraryManagementApp
             ReturnDateError = 4,
         }
 
-        public LendBook() { }
-
         public LendBook(Book book, Member member, DateTime returnDate)
         {
             this._lendBookId = LibrarySystem.GenerateLendBookId();

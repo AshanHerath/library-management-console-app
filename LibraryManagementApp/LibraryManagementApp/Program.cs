@@ -56,7 +56,7 @@ namespace LibraryManagementApp
         {
             int choice;
 
-            
+
 
             if (setChoose == 0)
             {
@@ -214,7 +214,7 @@ namespace LibraryManagementApp
                         Member memberToRemove = library.GetValidMember(memberIdToRemove);
 
                         // Check if there are any errors
-                        if (memberToRemove !=  null)
+                        if (memberToRemove != null)
                         {
                             library.RemoveMembers(memberToRemove);
                             Console.WriteLine("Member removed successfully.");
@@ -354,9 +354,65 @@ namespace LibraryManagementApp
                     BackToMenu("");
                     break;
 
+                case 9:
+                    // Lend Book
+                    Console.Clear();
+                    recall = choice;
+
+                    Console.Write("Enter Member ID: ");
+
+                    if (int.TryParse(Console.ReadLine(), out int memberIdToLend))
+                    {
+                        Member validMember = library.GetValidMember(memberIdToLend);
+
+                        if (validMember != null)
+                        {
+                            Console.Write("Enter Book Id to lend: ");
+
+                            if (int.TryParse(Console.ReadLine(), out int lendBookId))
+                            {
+                                Book validBook = library.GetValidBook(lendBookId);
+
+                                if (validBook != null)
+                                {
+                                    Console.Write("Enter return date (yyyy-MM-dd): ");
+                                    if (DateTime.TryParse(Console.ReadLine(), out DateTime returnDate))
+                                    {
+                                        library.LendBookForMember(validBook, validMember, returnDate);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Invalid date format. Please use yyyy-MM-dd format.");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Book not found in the library.");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid Book ID. Please enter a valid integer.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid Member ID. Please enter a valid integer.");
+                        }
+
+                        BackToMenu("1 to Lend Book or ");
+                        break;
+                    }
+                    BackToMenu("1 to Lend Book or ");
+                    break;
+
+
+
 
             }
         }
+
+
         // back to menu
         private static void BackToMenu(string message)
         {
