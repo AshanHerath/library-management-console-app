@@ -16,15 +16,9 @@ namespace LibraryManagementApp
         private DateTime _startDate;
         private DateTime _returnDate;
 
-        private string[] _errorMessages = new string[Enum.GetValues(typeof(LendBookErrorField)).Length];
+        private List<string> _errors = new List<string>();
 
-        public enum LendBookErrorField
-        {
-            LendBookIdError = 1,
-            LendBookError = 2,
-            MemberError = 3,
-            ReturnDateError = 4,
-        }
+        public LendBook() { }
 
         public LendBook(Book book, Member member, DateTime returnDate)
         {
@@ -54,11 +48,10 @@ namespace LibraryManagementApp
                 if (value != null)
                 {
                     _book = value;
-                    _errorMessages[(int)LendBookErrorField.LendBookError] = null;
                 }
                 else
                 {
-                    _errorMessages[(int)LendBookErrorField.LendBookError] = "Book can't be null or empty.";
+                    _errors.Add("Book can't be null or empty.");
                 }
             }
         }
@@ -74,11 +67,10 @@ namespace LibraryManagementApp
                 if (value != null)
                 {
                     _member = value;
-                    _errorMessages[(int)LendBookErrorField.MemberError] = null;
                 }
                 else
                 {
-                    _errorMessages[(int)LendBookErrorField.MemberError] = "Member Address can't be null or empty.";
+                    _errors.Add("Member Address can't be null or empty.");
                 }
             }
         }
@@ -87,18 +79,18 @@ namespace LibraryManagementApp
         {
             get
             {
-                return _startDate;
+                return _returnDate;
             }
             set
             {
                 if (value != DateTime.MinValue && value > DateTime.Now)
                 {
-                    _startDate = value;
-                    _errorMessages[(int)LendBookErrorField.ReturnDateError] = null;
+                    _returnDate = value;
                 }
                 else
                 {
-                    _errorMessages[(int)LendBookErrorField.ReturnDateError] = "Return date must be a valid future date.";
+                    _errors.Add("Return date must be a valid future date.");
+
                 }
             }
         }
@@ -112,29 +104,14 @@ namespace LibraryManagementApp
         }
 
 
-        public string GetError(LendBookErrorField field)
-        {
-            int index = (int)field;
-            if (index >= 0 && index < _errorMessages.Length)
-            {
-                return _errorMessages[index];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
         public int CheckError()
         {
-            foreach (var errorMessage in _errorMessages)
-            {
-                if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    return 0;
-                }
-            }
-            return 1;
+            return _errors.Count;
+        }
+
+        public string[] GetErrors()
+        {
+            return _errors.ToArray();
         }
 
     }

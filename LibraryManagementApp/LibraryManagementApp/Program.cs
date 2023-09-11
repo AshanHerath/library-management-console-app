@@ -1,24 +1,32 @@
 ﻿using LibraryManagementApp;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using static LibraryManagementApp.Book;
 
 namespace LibraryManagementApp
 {
     internal class Program
     {
-        private static Library library; // Initialize the library object
+        
+        private static Library _library; // Initialize the Library object
+        private static Program _program;
 
+        // Initialize variables to keep track of recall and setChoose
         private static int recall;
         private static int setChoose = 0;
 
         static void Main(string[] args)
         {
-            library = new Library();
+
+            _library = new Library();
+            _program = new Program();
+
             MenuChoose();
         }
 
         private static int ShowMenu()
         {
+            //create menu
             Console.Clear();
             Console.WriteLine("                                         ==========================================");
             Console.WriteLine("                                         |         Library Management System       |");
@@ -39,7 +47,9 @@ namespace LibraryManagementApp
             Console.WriteLine("                                         |=========================================|");
             Console.Write("                                                                                       ");
             Console.Write("                                                                          |  Enter your choice: ");
+
             int choice;
+
             if (int.TryParse(Console.ReadLine(), out choice))
             {
                 return choice;
@@ -76,43 +86,44 @@ namespace LibraryManagementApp
                     Console.Clear();
                     recall = choice;
 
-                    Book addBook = new Book();
+                    Book AddBook = new Book();
+
+                    Console.WriteLine("                                          ------------------------------------");
+                    Console.WriteLine("                                          |          Add a New Book          |");
+                    Console.WriteLine("                                          ------------------------------------");
 
                     // Get Book Title
-                    Console.WriteLine("Enter Book Title: ");
-                    addBook.BookName = Console.ReadLine();
+                    Console.Write("                                          | Enter Book Title: ");
+                    AddBook.BookName = Console.ReadLine();
 
                     // Get Book Author
-                    Console.WriteLine("Enter Book Author: ");
-                    addBook.BookAuthor = Console.ReadLine();
+                    Console.Write("                                          | Enter Book Author: ");
+                    AddBook.BookAuthor = Console.ReadLine();
 
                     // Get Book Description
-                    Console.WriteLine("Enter Book Description: ");
-                    addBook.BookDescription = Console.ReadLine();
+                    Console.Write("                                          | Enter Book Description: ");
+                    AddBook.BookDescription = Console.ReadLine();
 
                     // Get Book ISBN
-                    Console.WriteLine("Enter Book ISBN: ");
-                    addBook.BookIsbn = Console.ReadLine();
+                    Console.Write("                                          | Enter Book ISBN: ");
+                    AddBook.BookIsbn = Console.ReadLine();
+                    Console.WriteLine("                                          ------------------------------------");
 
                     // Check if there are any errors
-                    if (addBook.CheckError() == 0)
+                    if (AddBook.CheckError() == 0)
                     {
                         // Create a new Book and add it to the library
-                        Book newBook = new Book(addBook.BookName, addBook.BookDescription, addBook.BookAuthor, addBook.BookIsbn);
-                        library.AddBook(newBook);
-                        Console.WriteLine("succe fuly add");
+                        Book newBook = new Book(AddBook.BookName, AddBook.BookDescription, AddBook.BookAuthor, AddBook.BookIsbn);
+                        _library.AddBook(newBook);
+                        Console.WriteLine("");
+                        Console.WriteLine("Book added successfully");
 
                     }
                     else
                     {
-                        Console.WriteLine("Error(s) occurred:");
-
-                        foreach (string error in addBook.GetErrors())
-                        {
-                            Console.WriteLine($"Error: {error}");
-                        }
+                        _program.ErrorMessageShow(AddBook.GetErrors());
                     }
-
+                    Console.WriteLine("");
                     BackToMenu("1 to Add Book or ");
 
                     break;
@@ -124,35 +135,36 @@ namespace LibraryManagementApp
 
                     Book removeBook = new Book();
 
-                    Console.WriteLine("Remove a Book:");
-                    Console.WriteLine("------------------");
+                    Console.WriteLine("                                          ------------------------------------");
+                    Console.WriteLine("                                          |            Remove a Book         |"); 
+                    Console.WriteLine("                                          ------------------------------------");
 
-                    Console.Write("Enter Book Title to remove: ");
+                    Console.Write("                                          | Enter Book Title to remove: ");
 
                     if (int.TryParse(Console.ReadLine(), out int mbookIdToRemove))
                     {
-                        Book bookToRemove = library.GetValidBook(mbookIdToRemove);
+                        Book bookToRemove = _library.GetValidBook(mbookIdToRemove);
                         // Check if there are any errors
                         if (bookToRemove != null)
                         {
 
-                            library.RemoveBook(bookToRemove);
+                            _library.RemoveBook(bookToRemove);
+                            Console.WriteLine("");
                             Console.WriteLine("Book removed successfully.");
 
                         }
                         else
                         {
-                            Console.WriteLine("Error(s) occurred:");
 
-                            Console.WriteLine("book id not found");
+                            _program.ErrorMessageShow("book id not found");
 
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Invalid input. Please enter a valid number.");
+                        _program.ErrorMessageShow("Invalid input. Please enter a valid number.");
                     }
-
+                    Console.WriteLine("");
                     BackToMenu("1 to Remove Book or ");
 
                     break;
@@ -164,36 +176,33 @@ namespace LibraryManagementApp
 
                     Member addMember = new Member();
 
-                    Console.WriteLine("Register a New Member:");
-                    Console.WriteLine("-----------------------");
+                    Console.WriteLine("                                          ------------------------------------");
+                    Console.WriteLine("                                          |       Register a New Member      |");
+                    Console.WriteLine("                                          ------------------------------------");
 
-                    Console.Write("Enter Member Name: ");
+                    Console.Write("                                          | Enter Member Name: ");
                     addMember.MemberName = Console.ReadLine();
 
-                    Console.Write("Enter Member Address: ");
+                    Console.Write("                                          | Enter Member Address: ");
                     addMember.MemberAddress = Console.ReadLine();
 
-                    Console.Write("Enter Member NIC: ");
+                    Console.Write("                                          | Enter Member NIC: ");
                     addMember.MemberNic = Console.ReadLine();
+                    Console.WriteLine("                                          ------------------------------------");
 
                     // Check if there are any errors
                     if (addMember.CheckError() == 0)
                     {
                         Member newMember = new Member(addMember.MemberName, addMember.MemberAddress, addMember.MemberNic);
-                        library.RegisterMember(newMember);
-                        Console.Clear();
+                        _library.RegisterMember(newMember);
+                        Console.WriteLine("");
                         Console.WriteLine("Member registered successfully.");
                     }
                     else
                     {
-                        Console.Clear();
-                        Console.WriteLine("Error(s) occurred:");
-
-                        foreach (string error in addMember.GetErrors())
-                        {
-                            Console.WriteLine($"Error: {error}");
-                        }
+                        _program.ErrorMessageShow(addMember.GetErrors());
                     }
+                    Console.WriteLine("");
                     BackToMenu("1 to Register New Member or ");
                     break;
 
@@ -205,29 +214,33 @@ namespace LibraryManagementApp
 
                     Member removeMember = new Member();
 
-                    Console.WriteLine("Remove a Member:");
-                    Console.WriteLine("-----------------");
+                    Console.WriteLine("                                          ------------------------------------");
+                    Console.WriteLine("                                          |       Remove a Member            |"); 
+                    Console.WriteLine("                                          ------------------------------------");
 
-                    Console.Write("Enter Member ID to remove: ");
+
+                    Console.Write("                                          | Enter Member ID to remove: ");
                     if (int.TryParse(Console.ReadLine(), out int memberIdToRemove))
                     {
-                        Member memberToRemove = library.GetValidMember(memberIdToRemove);
+                        Member memberToRemove = _library.GetValidMember(memberIdToRemove);
 
                         // Check if there are any errors
                         if (memberToRemove != null)
                         {
-                            library.RemoveMembers(memberToRemove);
+                            _library.RemoveMembers(memberToRemove);
+                            Console.WriteLine("");
                             Console.WriteLine("Member removed successfully.");
                         }
                         else
                         {
-                            Console.WriteLine("Member id not found.");
+                            _program.ErrorMessageShow("Member id not found.");
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Invalid input. Please enter a valid number.");
+                        _program.ErrorMessageShow("Invalid input. Please enter a valid number.");
                     }
+                    Console.WriteLine("");
                     BackToMenu("1 to Remove Member or ");
                     break;
 
@@ -237,41 +250,45 @@ namespace LibraryManagementApp
                     Console.Clear();
                     recall = choice;
 
-                    Console.WriteLine("Search for a Book:");
-                    Console.WriteLine("------------------");
+                    Console.WriteLine("                                          ------------------------------------");
+                    Console.WriteLine("                                          |        Search for a Book         |"); 
+                    Console.WriteLine("                                          ------------------------------------");
 
-                    Console.Write("Enter Book ID to search: ");
+                    Console.Write("                                          | Enter Book ID to search: ");
                     string bookIdToSearch = Console.ReadLine();
+                    Console.WriteLine("                                          ------------------------------------");
 
                     if (int.TryParse(bookIdToSearch, out int bookId))
                     {
-                        Book foundBook = library.GetValidBook(bookId);
+                        Book foundBook = _library.GetValidBook(bookId);
 
                         if (foundBook != null)
                         {
 
-                            Book searchedBook = library.SearchBookInfo(bookId);
-
+                            Book searchedBook = _library.SearchBookInfo(bookId);
+                            Console.Clear();
+                            Console.WriteLine("");
                             Console.WriteLine("Book Information:");
                             Console.WriteLine("--------------------------------------------------");
-                            Console.WriteLine($"| Book ID: {searchedBook.BookId,6} |");
-                            Console.WriteLine($"| Title: {searchedBook.BookName,40} |");
-                            Console.WriteLine($"| Author: {searchedBook.BookAuthor,38} |");
-                            Console.WriteLine($"| Description: {searchedBook.BookIsbn,-34} |");
-                            Console.WriteLine($"| Availability: {(searchedBook.BookIsAvailable ? "Available" : "Not available"),-15} |");
+                            Console.WriteLine($"| Book ID:     | {searchedBook.BookId,-30} |");
+                            Console.WriteLine($"| Title:       | {searchedBook.BookName,-30} |");
+                            Console.WriteLine($"| Author:      | {searchedBook.BookAuthor,-30} |");
+                            Console.WriteLine($"| Description: | {searchedBook.BookIsbn,-30} |");
+                            Console.WriteLine($"| Availability:| {(searchedBook.BookIsAvailable ? "Available" : "Not available"),-30} |");
                             Console.WriteLine("--------------------------------------------------");
+
 
                         }
                         else
                         {
-                            Console.WriteLine($"Book with ID '{bookId}' not found.");
+                            _program.ErrorMessageShow($"Book with ID '{bookId}' not found.");
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Invalid Book ID.");
+                        _program.ErrorMessageShow("Invalid Book ID.");
                     }
-
+                    Console.WriteLine("");
                     BackToMenu("1 to Search Book Information or ");
                     break;
 
@@ -279,35 +296,44 @@ namespace LibraryManagementApp
                     // Search Member Information
                     Console.Clear();
                     recall = choice;
-                    Console.Write("Enter Member ID to search: ");
-                    String memberIdToSearch = Console.ReadLine();
+
+                    Console.WriteLine("                                          ------------------------------------");
+                    Console.WriteLine("                                          |     Enter Member ID to search    |");
+                    Console.WriteLine("                                          ------------------------------------");
+
+                    Console.Write("                                          | Enter Member ID to search: ");
+                    string memberIdToSearch = Console.ReadLine();
+                    Console.WriteLine("                                          ------------------------------------");
 
                     if (int.TryParse(memberIdToSearch, out int memberId))
                     {
-                        Member foundMember = library.GetValidMember(memberId);
+                        Member foundMember = _library.GetValidMember(memberId);
 
                         if (foundMember != null)
                         {
 
-                            Member searchedMember = library.SearchMemberInfo(memberId);
-
+                            Member searchedMember = _library.SearchMemberInfo(memberId);
+                            Console.Clear();
+                            Console.WriteLine("");
                             Console.WriteLine("Member Information:");
                             Console.WriteLine("--------------------------------------------------");
-                            Console.WriteLine($"| Member ID: {searchedMember.MemberId,6} |");
-                            Console.WriteLine($"| Name: {searchedMember.MemberName,40} |");
-                            Console.WriteLine($"| Address: {searchedMember.MemberAddress,38} |");
-                            Console.WriteLine($"| NIC Number: {searchedMember.MemberNic,-34} |");
+                            Console.WriteLine($"| Member ID:   | {searchedMember.MemberId,-30} |");
+                            Console.WriteLine($"| Name:        | {searchedMember.MemberName,-30} |");
+                            Console.WriteLine($"| Address:     | {searchedMember.MemberAddress,-30} |");
+                            Console.WriteLine($"| NIC Number:  | {searchedMember.MemberNic,-30} |");
                             Console.WriteLine("--------------------------------------------------");
+
                         }
                         else
                         {
-                            Console.WriteLine("Member not found.");
+                            _program.ErrorMessageShow("Member not found.");
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Invalid Member ID.");
+                        _program.ErrorMessageShow("Invalid Member ID.");
                     }
+                    Console.WriteLine("");
                     BackToMenu("1 to Search Member Information or ");
                     break;
 
@@ -316,19 +342,21 @@ namespace LibraryManagementApp
                     // List All Books
                     Console.Clear();
                     recall = choice;
-                    List<Book> allBooks = library.GetAllBooks();
+                    List<Book> allBooks = _library.GetAllBooks();
 
-                    Console.WriteLine("List of all books:");
-                    Console.WriteLine("------------------------------------------------------------------------------------------------");
-                    Console.WriteLine("| Book ID  | Title                | Author               |     ISBN          |  Availability   |");
-                    Console.WriteLine("------------------------------------------------------------------------------------------------");
+                    Console.WriteLine("             ------------------------------------------------------------------------------------------------");
+                    Console.WriteLine("             |                                       List of all books                                      |");
+                    Console.WriteLine("             ------------------------------------------------------------------------------------------------");
+                    Console.WriteLine("             | Book ID  | Title                | Author               |     ISBN          |  Availability   |");
+                    Console.WriteLine("             ------------------------------------------------------------------------------------------------");
 
                     foreach (var book in allBooks)
                     {
-                        Console.WriteLine($"| {book.BookId,8} | {book.BookName,-20} | {book.BookAuthor,-20} | {book.BookIsbn,-17} | {(book.BookIsAvailable ? "Available" : "Not available"),-15} |");
+                        Console.WriteLine($"             | {book.BookId,8} | {book.BookName,-20} | {book.BookAuthor,-20} | {book.BookIsbn,-17} | {(book.BookIsAvailable ? "Available" : "Not available"),-15} |");
                     }
 
-                    Console.WriteLine("------------------------------------------------------------------------------------------------");
+                    Console.WriteLine("             ------------------------------------------------------------------------------------------------");
+                    Console.WriteLine("");
                     BackToMenu("");
                     break;
 
@@ -338,19 +366,21 @@ namespace LibraryManagementApp
                     // List All Members
                     Console.Clear();
                     recall = choice;
-                    List<Member> allMembers = library.GetAllMembers();
+                    List<Member> allMembers = _library.GetAllMembers();
 
-                    Console.WriteLine("List of all members:");
-                    Console.WriteLine("---------------------------------------------------------------------------------------");
-                    Console.WriteLine("| Member ID   | Name                      |   Address             |  NIC               |");
-                    Console.WriteLine("---------------------------------------------------------------------------------------");
+                    Console.WriteLine("                   ---------------------------------------------------------------------------------------");
+                    Console.WriteLine("                   |                                      List of all members                            |");
+                    Console.WriteLine("                   ---------------------------------------------------------------------------------------");
+                    Console.WriteLine("                   | Member ID   | Name                      |   Address             |  NIC              |");
+                    Console.WriteLine("                   ---------------------------------------------------------------------------------------");
 
                     foreach (var member in allMembers)
                     {
-                        Console.WriteLine($"| {member.MemberId,10} | {member.MemberName,-25} | {member.MemberAddress,-25} | {member.MemberNic,-25} |");
+                        Console.WriteLine($"                   | {member.MemberId,11} | {member.MemberName,-25} | {member.MemberAddress,-21} | {member.MemberNic,-17} |");
                     }
 
-                    Console.WriteLine("--------------------------------------------");
+                    Console.WriteLine("                   ---------------------------------------------------------------------------------------");
+                    Console.WriteLine("");
                     BackToMenu("");
                     break;
 
@@ -359,50 +389,66 @@ namespace LibraryManagementApp
                     Console.Clear();
                     recall = choice;
 
-                    Console.Write("Enter Member ID: ");
+                    LendBook addLendBook = new LendBook();
+
+                   Console.WriteLine("                                          ----------------------------------------------");
+                    Console.WriteLine("                                          |                   Lend Book                |");
+                    Console.WriteLine("                                          ----------------------------------------------");
+
+                    Console.Write("                                          | Enter Member ID: ");
 
                     if (int.TryParse(Console.ReadLine(), out int memberIdToLend))
                     {
-                        Member validMember = library.GetValidMember(memberIdToLend);
+                        Member validMember = _library.GetValidMember(memberIdToLend);
 
                         if (validMember != null)
                         {
-                            Console.Write("Enter Book Id to lend: ");
+                            Console.Write("                                          | Enter Book Id to lend: ");
 
                             if (int.TryParse(Console.ReadLine(), out int lendBookId))
                             {
-                                Book validBook = library.GetValidBook(lendBookId);
+                                Book validBook = _library.GetValidBook(lendBookId);
 
                                 if (validBook != null)
                                 {
-                                    Console.Write("Enter return date (yyyy-MM-dd): ");
+                                    Console.Write("                                          | Enter return date (yyyy-MM-dd): ");
                                     if (DateTime.TryParse(Console.ReadLine(), out DateTime returnDate))
                                     {
-                                        library.LendBookForMember(validBook, validMember, returnDate);
+                                        addLendBook.ReturnDate = returnDate;
+                                        // Check if there are any errors
+                                        if (addLendBook.CheckError() == 0)
+                                        {
+                                            _library.LendBookForMember(validBook, validMember, returnDate);
+                                        }
+                                        else
+                                        {
+                                            _program.ErrorMessageShow(addLendBook.GetErrors());
+                                        }
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Invalid date format. Please use yyyy-MM-dd format.");
+                                        _program.ErrorMessageShow("Invalid date format. Please use yyyy-MM-dd format.");
                                     }
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Book not found in the library.");
+                                    _program.ErrorMessageShow("Book not found in the library.");
                                 }
                             }
                             else
                             {
-                                Console.WriteLine("Invalid Book ID. Please enter a valid integer.");
+                                _program.ErrorMessageShow("Invalid Book ID. Please enter a valid integer.");
                             }
                         }
                         else
                         {
-                            Console.WriteLine("Invalid Member ID. Please enter a valid integer.");
+                            _program.ErrorMessageShow("Invalid Member ID. Please enter a valid integer.");
                         }
-
+                        Console.WriteLine("");
                         BackToMenu("1 to Lend Book or ");
                         break;
                     }
+                    Console.WriteLine("");
                     BackToMenu("1 to Lend Book or ");
                     break;
 
@@ -412,16 +458,21 @@ namespace LibraryManagementApp
                     Console.Clear();
                     recall = choice;
 
-                    Console.Write("Enter Transaction ID to return: ");
+                    Console.WriteLine("                                          ------------------------------------");
+                    Console.WriteLine("                                          |            Return Book           |");
+                    Console.WriteLine("                                          ------------------------------------");
+
+                    Console.Write("                                          | Enter Transaction ID to return: ");
 
                     if (int.TryParse(Console.ReadLine(), out int lendBookIdToReturn))
                     {
-                        library.ReturnBook(lendBookIdToReturn);
+                        _library.ReturnBook(lendBookIdToReturn);
                     }
                     else
                     {
-                        Console.WriteLine("Invalid input.");
+                        _program.ErrorMessageShow("Invalid input.");
                     }
+                    Console.WriteLine("");
                     BackToMenu("1 to Return Book or ");
                     break;
 
@@ -430,18 +481,19 @@ namespace LibraryManagementApp
                     // View Lending Information
                     Console.Clear();
                     recall = choice;
-                    List<LendBook> lendBooks = library.ViewLendingInfo();
-                    Console.WriteLine("Lending Information:");
-                    Console.WriteLine("----------------------------------------------------------------------------------");
-                    Console.WriteLine("| Transaction ID | Book Title     | Member Name    | Start Date   | Return Date  |");
-                    Console.WriteLine("----------------------------------------------------------------------------------");
+                    List<LendBook> lendBooks = _library.ViewLendingInfo();
+                    Console.WriteLine("                           ----------------------------------------------------------------------------------");
+                    Console.WriteLine("                           |                                Lending Information                             |");
+                    Console.WriteLine("                           ----------------------------------------------------------------------------------");
+                    Console.WriteLine("                           | Transaction ID | Book Title     | Member Name    | Start Date   | Return Date  |");
+                    Console.WriteLine("                           ----------------------------------------------------------------------------------");
 
                     foreach (LendBook lendBook in lendBooks)
                     {
-                        Console.WriteLine($"| {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,14} | {lendBook.MemberOfLend.MemberName,13} | {lendBook.StartDate.ToString("yyyy-MM-dd"),12} | {lendBook.ReturnDate.ToString("yyyy-MM-dd"),12} |");
+                        Console.WriteLine($"                           | {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,14} | {lendBook.MemberOfLend.MemberName,13} | {lendBook.StartDate.ToString("yyyy-MM-dd"),12} | {lendBook.ReturnDate.ToString("yyyy-MM-dd"),12} |");
                     }
 
-                    Console.WriteLine("----------------------------------------------------------------------------------");
+                    Console.WriteLine("                           ----------------------------------------------------------------------------------");
                     BackToMenu("");
                     break;
 
@@ -450,20 +502,21 @@ namespace LibraryManagementApp
                     // Display Overdue Books
                     Console.Clear();
                     recall = choice;
-                    List<LendBook> overdueBooks = library.DisplayOverdueBooks();
+                    List<LendBook> overdueBooks = _library.DisplayOverdueBooks();
 
-                    Console.WriteLine("Overdue Books:");
-                    Console.WriteLine("---------------------------------------------------------------------------------------");
-                    Console.WriteLine("| Transaction ID | Book Title          | Member Name        | Due Date    | Fine      |");
-                    Console.WriteLine("---------------------------------------------------------------------------------------");
+                    Console.WriteLine("                           ---------------------------------------------------------------------------------------");
+                    Console.WriteLine("                           |                                    Overdue Books                                    |");
+                    Console.WriteLine("                           ---------------------------------------------------------------------------------------");
+                    Console.WriteLine("                           | Transaction ID | Book Title          | Member Name        | Due Date    | Fine      |");
+                    Console.WriteLine("                           ---------------------------------------------------------------------------------------");
 
                     foreach (LendBook lendBook in overdueBooks)
                     {
-                        decimal fine = library.CalculateFine(lendBook);
+                        decimal fine = _library.CalculateFine(lendBook);
                         Console.WriteLine($"| {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,-20} | {lendBook.MemberOfLend.MemberName,-20} | {lendBook.ReturnDate.ToString("yyyy-MM-dd"),-12} | Rs. {fine,-9} |");
                     }
 
-                    Console.WriteLine("---------------------------------------------------------------------------------------");
+                    Console.WriteLine("                           ---------------------------------------------------------------------------------------");
                     BackToMenu("");
                     break;
 
@@ -500,8 +553,25 @@ namespace LibraryManagementApp
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input. Please enter a valid number.");
+                    _program.ErrorMessageShow("Invalid input. Please enter a valid number.");
                 }
+            }
+        }
+
+        private void ErrorMessageShow(string error)
+        {
+            Console.Clear();
+            Console.WriteLine("Error(s) occurred:");
+            Console.WriteLine(error);
+        }
+
+        private void ErrorMessageShow(string[] errors)
+        {
+            Console.Clear();
+            Console.WriteLine("Error(s) occurred:");
+            foreach (string error in errors)
+            {
+                Console.WriteLine($"Error: {error}");
             }
         }
     }
