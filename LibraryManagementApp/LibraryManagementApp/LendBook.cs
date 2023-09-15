@@ -13,19 +13,19 @@ namespace LibraryManagementApp
         private int _lendBookId;
         private Book _book;
         private Member _member;
-        private DateTime _startDate;
+        private DateTime _issueDate;
         private DateTime _returnDate;
 
         private List<string> _errors = new List<string>();
 
         public LendBook() { }
 
-        public LendBook(Book book, Member member, DateTime returnDate)
+        public LendBook(Book book, Member member, DateTime issueDate, DateTime returnDate)
         {
             this._lendBookId = LibrarySystem.GenerateLendBookId();
             this._book = book;
             this._member = member;
-            this._startDate = DateTime.Now;
+            this._issueDate = issueDate;
             this._returnDate = returnDate;
         }
 
@@ -81,25 +81,25 @@ namespace LibraryManagementApp
             {
                 return _returnDate;
             }
-            set
-            {
-                if (value != DateTime.MinValue && value > DateTime.Now)
-                {
-                    _returnDate = value;
-                }
-                else
-                {
-                    _errors.Add("Return date must be a valid future date.");
+            //set
+            //{
+            //    if (value != DateTime.MinValue && value > DateTime.Now)
+            //    {
+            //        _returnDate = value;
+            //    }
+            //    else
+            //    {
+            //        _errors.Add("Return date must be a valid future date.");
 
-                }
-            }
+            //    }
+            //}
         }
 
-        public DateTime StartDate
+        public DateTime IssueDate
         {
             get
             {
-                return _startDate;
+                return _issueDate;
             }
         }
 

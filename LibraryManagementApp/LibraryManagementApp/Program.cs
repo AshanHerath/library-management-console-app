@@ -1,6 +1,7 @@
 ﻿using LibraryManagementApp;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.Net;
 using static LibraryManagementApp.Book;
 
 namespace LibraryManagementApp
@@ -46,7 +47,7 @@ namespace LibraryManagementApp
             Console.WriteLine("                                         | 13. Quit                                |");
             Console.WriteLine("                                         |=========================================|");
             Console.Write("                                                                                       ");
-            Console.Write("                                                                          |  Enter your choice: ");
+            Console.Write("                                             |  Enter your choice: ");
 
             int choice;
 
@@ -249,45 +250,95 @@ namespace LibraryManagementApp
                     // Search Book Information
                     Console.Clear();
                     recall = choice;
-
-                    Console.WriteLine("                                          ------------------------------------");
-                    Console.WriteLine("                                          |        Search for a Book         |"); 
-                    Console.WriteLine("                                          ------------------------------------");
-
-                    Console.Write("                                          | Enter Book ID to search: ");
-                    string bookIdToSearch = Console.ReadLine();
-                    Console.WriteLine("                                          ------------------------------------");
-
-                    if (int.TryParse(bookIdToSearch, out int bookId))
+                    Console.WriteLine("");
+                    Console.WriteLine("Enter number 1 to search the book by book ID and number 2 to search the book by ISBN number.");
+                    Console.WriteLine("");
+                    if (int.TryParse(Console.ReadLine(), out int select))
                     {
-                        Book foundBook = _library.GetValidBook(bookId);
-
-                        if (foundBook != null)
+                        if (select == 1)
                         {
+                            Console.WriteLine("                                          ------------------------------------");
+                            Console.WriteLine("                                          |        Search for a Book         |");
+                            Console.WriteLine("                                          ------------------------------------");
 
-                            Book searchedBook = _library.SearchBookInfo(bookId);
-                            Console.Clear();
-                            Console.WriteLine("");
-                            Console.WriteLine("Book Information:");
-                            Console.WriteLine("--------------------------------------------------");
-                            Console.WriteLine($"| Book ID:     | {searchedBook.BookId,-30} |");
-                            Console.WriteLine($"| Title:       | {searchedBook.BookName,-30} |");
-                            Console.WriteLine($"| Author:      | {searchedBook.BookAuthor,-30} |");
-                            Console.WriteLine($"| Description: | {searchedBook.BookIsbn,-30} |");
-                            Console.WriteLine($"| Availability:| {(searchedBook.BookIsAvailable ? "Available" : "Not available"),-30} |");
-                            Console.WriteLine("--------------------------------------------------");
+                            Console.Write("                                          | Enter Book ID to search: ");
+                            string bookIdToSearch = Console.ReadLine();
+                            Console.WriteLine("                                          ------------------------------------");
+
+                            if (int.TryParse(bookIdToSearch, out int bookId))
+                            {
+                                Book foundBook = _library.GetValidBook(bookId);
+
+                                if (foundBook != null)
+                                {
+
+                                    Book searchedBook = _library.SearchBookInfo(bookId);
+                                    Console.Clear();
+                                    Console.WriteLine("");
+                                    Console.WriteLine("Book Information:");
+                                    Console.WriteLine("--------------------------------------------------");
+                                    Console.WriteLine($"| Book ID:     | {searchedBook.BookId,-30} |");
+                                    Console.WriteLine($"| Title:       | {searchedBook.BookName,-30} |");
+                                    Console.WriteLine($"| Author:      | {searchedBook.BookAuthor,-30} |");
+                                    Console.WriteLine($"| Description: | {searchedBook.BookDescription,-30} |");
+                                    Console.WriteLine($"| ISBN Number: | {searchedBook.BookIsbn,-30} |");
+                                    Console.WriteLine($"| Availability:| {(searchedBook.BookIsAvailable ? "Available" : "Not available"),-30} |");
+                                    Console.WriteLine("--------------------------------------------------");
 
 
+                                }
+                                else
+                                {
+                                    _program.ErrorMessageShow($"Book with ID '{bookId}' not found.");
+                                }
+                            }
+                            else
+                            {
+                                _program.ErrorMessageShow("Invalid Book ID.");
+                            }
+                        }
+                        else if (select == 2)
+                        {
+                            Console.WriteLine("                                          ------------------------------------");
+                            Console.WriteLine("                                          |        Search for a Book         |");
+                            Console.WriteLine("                                          ------------------------------------");
+
+                            Console.Write("                                          | Enter Book ISBN Number to search: ");
+                            string bookIsbnToSearch = Console.ReadLine();
+                            Console.WriteLine("                                          ------------------------------------");
+
+                            Book searchedBook = _library.SearchBookInfo(bookIsbnToSearch);
+
+                            if (searchedBook != null)
+                            {
+
+
+                                Console.Clear();
+                                Console.WriteLine("");
+                                Console.WriteLine("Book Information:");
+                                Console.WriteLine("--------------------------------------------------");
+                                Console.WriteLine($"| Book ID:     | {searchedBook.BookId,-30} |");
+                                Console.WriteLine($"| Title:       | {searchedBook.BookName,-30} |");
+                                Console.WriteLine($"| Author:      | {searchedBook.BookAuthor,-30} |");
+                                Console.WriteLine($"| Description: | {searchedBook.BookDescription,-30} |");
+                                Console.WriteLine($"| ISBN Number: | {searchedBook.BookIsbn,-30} |");
+                                Console.WriteLine($"| Availability:| {(searchedBook.BookIsAvailable ? "Available" : "Not available"),-30} |");
+                                Console.WriteLine("--------------------------------------------------");
+
+
+                            }
+                            else
+                            {
+                                _program.ErrorMessageShow($"Book with ID '{bookIsbnToSearch}' not found.");
+                            }
                         }
                         else
                         {
-                            _program.ErrorMessageShow($"Book with ID '{bookId}' not found.");
+                            _program.ErrorMessageShow("Invalid Select.");
                         }
                     }
-                    else
-                    {
-                        _program.ErrorMessageShow("Invalid Book ID.");
-                    }
+
+                    
                     Console.WriteLine("");
                     BackToMenu("1 to Search Book Information or ");
                     break;
@@ -411,24 +462,29 @@ namespace LibraryManagementApp
 
                                 if (validBook != null)
                                 {
-                                    Console.Write("                                          | Enter return date (yyyy-MM-dd): ");
-                                    if (DateTime.TryParse(Console.ReadLine(), out DateTime returnDate))
+
+                                    Console.Write("                                          | Enter issue date (yyyy-MM-dd): ");
+                                    if (DateTime.TryParse(Console.ReadLine(), out DateTime issueDate))
                                     {
-                                        addLendBook.ReturnDate = returnDate;
-                                        // Check if there are any errors
-                                        if (addLendBook.CheckError() == 0)
+
+                                        Console.Write("                                          | Enter return date (yyyy-MM-dd): ");
+
+                                        if (DateTime.TryParse(Console.ReadLine(), out DateTime returnDate))
                                         {
-                                            _library.LendBookForMember(validBook, validMember, returnDate);
+
+                                            _library.LendBookForMember(validBook, validMember, issueDate, returnDate);
+
                                         }
                                         else
                                         {
-                                            _program.ErrorMessageShow(addLendBook.GetErrors());
+                                            _program.ErrorMessageShow("Invalid date format. Please use yyyy-MM-dd format.");
                                         }
                                     }
                                     else
                                     {
                                         _program.ErrorMessageShow("Invalid date format. Please use yyyy-MM-dd format.");
                                     }
+
                                 }
                                 else
                                 {
@@ -490,7 +546,7 @@ namespace LibraryManagementApp
 
                     foreach (LendBook lendBook in lendBooks)
                     {
-                        Console.WriteLine($"                           | {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,14} | {lendBook.MemberOfLend.MemberName,13} | {lendBook.StartDate.ToString("yyyy-MM-dd"),12} | {lendBook.ReturnDate.ToString("yyyy-MM-dd"),12} |");
+                        Console.WriteLine($"                           | {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,14} | {lendBook.MemberOfLend.MemberName,13} | {lendBook.IssueDate.ToString("yyyy-MM-dd"),12} | {lendBook.ReturnDate.ToString("yyyy-MM-dd"),12} |");
                     }
 
                     Console.WriteLine("                           ----------------------------------------------------------------------------------");
@@ -512,8 +568,8 @@ namespace LibraryManagementApp
 
                     foreach (LendBook lendBook in overdueBooks)
                     {
-                        decimal fine = _library.CalculateFine(lendBook);
-                        Console.WriteLine($"| {lendBook.LendBookId,15} | {lendBook.LendBookName.BookName,-20} | {lendBook.MemberOfLend.MemberName,-20} | {lendBook.ReturnDate.ToString("yyyy-MM-dd"),-12} | Rs. {fine,-9} |");
+                        float fine = _library.CalculateFine(lendBook);
+                        Console.WriteLine($"                           | {lendBook.LendBookId,14} | {lendBook.LendBookName.BookName,-19} | {lendBook.MemberOfLend.MemberName,-18} | {lendBook.ReturnDate.ToString("yyyy-MM-dd"),-11} | Rs. {fine,-5} |");
                     }
 
                     Console.WriteLine("                           ---------------------------------------------------------------------------------------");

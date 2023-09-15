@@ -53,10 +53,10 @@ namespace LibraryManagementApp
             _members.Remove(memberId);
         }
 
-        // Method to search for a book by title (case-insensitive)
-        public Book SearchBookInfo(string bookTitle)
+        // Method to search for a book by ISBN
+        public Book SearchBookInfo(string bookIsbn)
         {
-            return _books.Find(b => b.BookName.Equals(bookTitle, StringComparison.OrdinalIgnoreCase));
+            return _books.Find(b => b.BookIsbn.Equals(bookIsbn, StringComparison.OrdinalIgnoreCase));
         }
 
         // Method to search for a book by its ID
@@ -78,14 +78,14 @@ namespace LibraryManagementApp
         }
 
         // Method to lend a book to a member
-        public void LendBookForMember(Book bookId, Member memberId, DateTime returnDate)
+        public void LendBookForMember(Book bookId, Member memberId, DateTime issueDate, DateTime returnDate)
         {
             bool bookIsAvailable = bookId.BookIsAvailable;
 
             if (bookId != null && memberId != null && bookIsAvailable)
             {
                 // Create a new LendBook object to track the lending transaction
-                LendBook lendBook = new LendBook(bookId, memberId, returnDate);
+                LendBook lendBook = new LendBook(bookId, memberId, issueDate, returnDate);
                 _lendBooks.Add(lendBook);
                 bookId.BookIsAvailable = false;
                 Console.WriteLine("");
@@ -129,20 +129,20 @@ namespace LibraryManagementApp
         }
 
         // Method to calculate the fine for an overdue book
-        public decimal CalculateFine(LendBook lendBook)
+        public float CalculateFine(LendBook lendBook)
         {
-            DateTime dueDate = lendBook.ReturnDate;
-            DateTime currentDate = DateTime.Now;
+            DateTime dueDate = lendBook.ReturnDate.Date;
+            DateTime currentDate = DateTime.Now.Date;
             TimeSpan overdueDuration = currentDate - dueDate;
-            decimal fine = 0;
+            float fine = 0;
 
             if (overdueDuration.TotalDays <= 7)
             {
-                fine = (decimal)overdueDuration.TotalDays * 50;
+                fine = (float)overdueDuration.TotalDays * 50;
             }
             else
             {
-                fine = 7 * 50 + (decimal)(overdueDuration.TotalDays - 7) * 100;
+                fine = 7 * 50 + (float)(overdueDuration.TotalDays - 7) * 100;
             }
 
             return fine;
